@@ -5,10 +5,11 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import argparse
+import os
 import pprint
 
-import os
 from sonos_suite.user_interfaces.cli import terminal_utils
+from sonos_suite.user_interfaces.utils import normalize_all_command_arguments
 from sonos_suite.device_management.device_manager import SonosDeviceManager
 from sonos_suite.device_management import exc
 
@@ -89,8 +90,7 @@ def main():
     else:
         print('Selected Group:', device_manager.device.group.label)
         print('Selected Player:', device_manager.device.player_name)
-        command_args = [int(argument) if argument.isdigit() else argument for argument in cli_manager.args]
-        print(command_args)
+        command_args = normalize_all_command_arguments(cli_manager.args)
 
         try:
             result = device_manager.perform_command(cli_manager.command, *command_args)
