@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import datetime
 import logging
 
 from soco.core import SoCo
@@ -62,9 +63,53 @@ class SonosDevice(SoCo):
             radio_data=radio_template.format(radio_show=kwargs['radio_show']) if kwargs.get('radio_show') else '',
             current_position=position,
             total_duration=duration,
-            progress_bar=util.make_progress_bar(util.get_percent_elapsed_from_time_strings(position, duration)),
+            progress_bar=self._make_progress_bar(self._get_percent_elapsed_from_time_strings(position, duration)),
             volume=kwargs.get('volume') or self.volume,
         )
+
+    @property
+    def progress(self):
+        info = self.get_current_track_info()
+        position = info['position']
+        duration = info['duration']
+        return self._make_progress_bar(self._get_percent_elapsed_from_time_strings(position, duration))
+
+    @staticmethod
+    def _make_progress_bar(percent, width=48, fill_char='=', padding_char='-'):
+        template = '[{fill}{padding}]'
+        if percent != 0:
+            fill_width = int(width * percent) or 1
+        else:
+            fill_width = 0
+        padding_width = width - fill_width
+        try:
+            assert fill_width + padding_width == width
+        except AssertionError:
+            print(fill_width, '+', padding_width, '==', fill_width + padding_width, '!=', width)
+        return template.format(
+            fill=fill_char * fill_width,
+            padding=padding_char * padding_width
+        )
+
+    @staticmethod
+    def _get_percent_elapsed_from_time_strings(position_string, duration_string):
+        if not position_string:
+            position_string = '00:00:00'
+
+        if not duration_string:
+            duration_string = '00:00:00'
+
+        position_time = datetime.datetime.strptime(position_string, '%H:%M:%S').time()
+        duration_time = datetime.datetime.strptime(duration_string, '%H:%M:%S').time()
+
+        time_to_seconds = lambda t: (3600 * t.hour) + (60 * t.minute) + (1 * t.second)
+        position_seconds = time_to_seconds(position_time)
+        duration_seconds = time_to_seconds(duration_time)
+
+        try:
+            return position_seconds / duration_seconds
+        except ZeroDivisionError:
+            return 1
 
     @property
     def available_command_names(self):
