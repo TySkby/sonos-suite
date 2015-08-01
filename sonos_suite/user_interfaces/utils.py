@@ -6,6 +6,9 @@ from __future__ import unicode_literals
 
 
 def normalize_single_command_argument(command_argument):
+    if not isinstance(command_argument, (str, unicode)):
+        return command_argument
+
     command_argument = command_argument.strip()
     if command_argument.isdigit():
         return int(command_argument)
