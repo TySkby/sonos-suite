@@ -100,7 +100,7 @@ Then, start making requests:
 
 * Set the volume with a GET request:
 
-  `curl -X GET 'http://localhost:9090/sonos-server/volume?player=living&args=30'
+  `curl -X GET 'http://localhost:9090/sonos-server/volume?player=living&args=30'`
 
 * Or a POST request:
 
