@@ -4,7 +4,7 @@ A suite of tools for Sonos
 Unfortunately (but perhaps unsurprisingly), Sonos doesn't have provide a controller application for Linux...
 enter Sonos Suite!
 
-Sonos Suite is built on top of the excellent [SoCo|http://python-soco.com/] library, aimed specifically at
+Sonos Suite is built on top of the excellent [SoCo](http://python-soco.com) library, aimed specifically at
 providing Linux users with handy tools to control their Sonos player(s) without needing to reach for a phone
 or tablet.
 
