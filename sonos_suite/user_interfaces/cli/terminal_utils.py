@@ -5,6 +5,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import logging
 import os
 
 
@@ -31,17 +32,17 @@ def get_terminal_size(default_height=25, default_width=80):
         import fcntl, termios, struct
         height, width = struct.unpack('hh', fcntl.ioctl(1, termios.TIOCGWINSZ, '1234'))
         return height, width
-    except Exception:
+    except Exception as e:
         # TODO: Log based on config preferences
-        pass
+        logging.debug('Terminal size from termios.TIOCGWINSZ failed due to %s: %s', e.__class__.__name__, e)
 
     # Fall back to environment
     try:
         height, width = os.environ['LINES'], os.environ['COLUMNS']
         return height, width
-    except Exception:
+    except Exception as e:
         # TODO: Log based on config preferences
-        pass
+        logging.debug('Terminal size from environment failed due to %s: %s', e.__class__.__name__, e)
 
     # Fall back to returning defaults
     return default_height, default_width
