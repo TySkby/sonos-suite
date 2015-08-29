@@ -29,7 +29,7 @@ def serve(host='localhost', port=80, debug=False):
         port=port,
         app=make_app(debug)
     )
-    logger.info('* Running on http://%s:%s/' % httpd.server_address)
+    logger.info('* Running on http://%s:%s/', httpd.server_address)
     if debug:
         logger.info('* Running in DEBUG mode')
     try:
