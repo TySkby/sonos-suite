@@ -89,4 +89,6 @@ def fit_text_to_terminal(text, column_padding=2):
             else:
                 # No text remains to be formatted because we are left with an empty string
                 break
+
+    # Return a single string of all `lines` members joined by a newline
     return '\n'.join(lines)
