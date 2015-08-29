@@ -109,12 +109,12 @@ class DeviceCommandResponder(object):
 
     def _get_command_arguments(self, request):
         raw_arguments = self.get_request_param(request, 'args')
-        if raw_arguments is not None:
-            if isinstance(raw_arguments, (str, unicode)):
-                return normalize_all_command_arguments(raw_arguments.split(','))
-            elif isinstance(raw_arguments, (list, tuple)):
-                return normalize_all_command_arguments(raw_arguments)
-        return []
+        if isinstance(raw_arguments, (str, unicode)):
+            return normalize_all_command_arguments(raw_arguments.split(','))
+        elif isinstance(raw_arguments, (list, tuple)):
+            return normalize_all_command_arguments(raw_arguments)
+        else:
+            return []
 
     @staticmethod
     def _get_command_result(device_manager, command, command_arguments):
