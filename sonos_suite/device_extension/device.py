@@ -8,6 +8,7 @@ import logging
 
 from soco.core import SoCo
 
+from sonos_suite.user_interfaces.screen import MainApplication
 
 class SonosDevice(SoCo):
     def sleep_timer(self, duration_in_minutes=None):
@@ -25,6 +26,10 @@ class SonosDevice(SoCo):
             ('InstanceID', 0)
         ])
         return '{} remaining'.format(status.get('RemainingSleepTimerDuration') or '00:00:00')
+
+    def screen(self):
+        app = MainApplication(self).run()
+
 
     def current(self):
         if self.is_coordinator is False:
